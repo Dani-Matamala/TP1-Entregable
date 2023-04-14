@@ -1,7 +1,7 @@
 <?php
 
 class Viaje {
-    private $responsable; //ResponsableV
+    private $responsable; //instacia de la clase ResponsableV
     private $codigo;
     private $destino;
     private $maxPasajeros;
@@ -71,9 +71,9 @@ class Viaje {
 
 
     public function quitarPasajero($pasajero) {
-        foreach ($this->pasajeros as $buscado) {
+        foreach ($this->pasajeros as $key => $buscado) {
             if ($buscado->getNumero_documento() == $pasajero->getNumero_documento()) {
-                unset($this->pasajeros[$buscado]);
+                unset($this->pasajeros[$key]);
                 return true;
             }
         }
@@ -83,10 +83,10 @@ class Viaje {
     public function __toString() {
         $pasajeros = "";
         foreach ($this->pasajeros as $pasajero) {
-            $pasajeros .= $pasajero->__toString() . ", \n";
+            $pasajeros .= "#".$pasajero->__toString() . ", \n";
         }
         $pasajeros = rtrim($pasajeros, ', ');
-        return "Código: $this->codigo\nDestino: $this->destino\nMáximo de pasajeros: $this->maxPasajeros\nResponsable: $this->responsable\nPasajeros: $pasajeros";
+        return "Código: $this->codigo\nDestino: $this->destino\nMáximo de pasajeros: $this->maxPasajeros\nResponsable\n$this->responsable\nPasajeros\n$pasajeros";
     }
     
 }
