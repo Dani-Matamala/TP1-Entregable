@@ -47,7 +47,7 @@ class ResponsableV {
     public function __toString() {
         return "Nombre: " . $this->nombre . 
         "\nApellido: " . $this->apellido . 
-        "\nTipo de Documento: " . $this->numero_empleado . 
-        "\nNúmero de Documento: " . $this->numero_licencia;
+        "\nNumero de Empleado: " . $this->numero_empleado . 
+        "\nNúmero de Licencia: " . $this->numero_licencia;
       }
 }
