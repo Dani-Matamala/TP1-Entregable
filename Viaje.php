@@ -1,14 +1,18 @@
 <?php
+
 class Viaje {
+    private $responsable;//ResponsableV
     private $codigo;
     private $destino;
     private $maxPasajeros;
-    private $pasajeros = array();
+    private $pasajeros;//referencia a coleccion de pasajeros
     
-    public function __construct($codigo, $destino, $maxPasajeros) {
+    public function __construct($codigo, $destino, $maxPasajeros, $responsable) {
+        $this->responsable = $responsable;
         $this->codigo = $codigo;
         $this->destino = $destino;
         $this->maxPasajeros = $maxPasajeros;
+        $this->pasajeros = array();
     }
     
     public function getCodigo() {
@@ -38,6 +42,14 @@ class Viaje {
     public function getPasajeros() {
         return $this->pasajeros;
     }
+
+    public function getResponsableV(){
+        return $this->responsable->__toString();
+    }
+
+    public function setResponbleV($responsableV){
+        $this->responsable = $responsableV;
+    }
     
     public function agregarPasajero($nombre, $apellido, $numeroDoc) {
         if (count($this->pasajeros) < $this->maxPasajeros) {
@@ -63,4 +75,3 @@ class Viaje {
         return false;
     }
 }
-?>
