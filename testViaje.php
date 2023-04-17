@@ -43,7 +43,7 @@ function cargarResponsable($viaje) {
     $apellido = fgets(STDIN);
     echo "Ingrese el número de documento de licencia: ";
     $numero_licencia = fgets(STDIN);
-    echo "Ingrese el teléfono del pasajero: ";
+    echo "Ingrese el teléfono: ";
     $numero_empleado = fgets(STDIN);
 
     $responsable = new ResponsableV($numero_empleado, $numero_licencia, $nombre, $apellido);
