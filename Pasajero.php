@@ -47,7 +47,7 @@ class Pasajero {
     public function __toString() {
         return "Nombre: " . $this->nombre .
             "\nApellido: " . $this->apellido .
-            "\nTipo de Documento: " . $this->numero_documento .
-            "\nNúmero de Documento: " . $this->telefono;
+            "\nDocumento: " . $this->numero_documento .
+            "\nTelefono: " . $this->telefono;
     }
 }
