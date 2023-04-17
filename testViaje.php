@@ -1,7 +1,57 @@
 <?php
 require_once('Viaje.php');
+require_once('./Pasajero.php');
+require_once('./ResponsableV.php');
 
-$viaje = new Viaje(" ", " ", " ");
+$viaje = new Viaje(" ", " ", " ", " ");
+
+function cargarPasajero($viaje) {
+    $nombre = "";
+    $apellido = "";
+    $numero_documento = "";
+    $telefono = "";
+
+    echo "Ingrese el nombre del pasajero: ";
+    $nombre = fgets(STDIN);
+    echo "Ingrese el apellido del pasajero: ";
+    $apellido = fgets(STDIN);
+    echo "Ingrese el número de documento del pasajero: ";
+    $numero_documento = fgets(STDIN);
+    echo "Ingrese el teléfono del pasajero: ";
+    $telefono = fgets(STDIN);
+
+    $pasajero = new Pasajero($nombre, $apellido, $numero_documento, $telefono);
+
+    if ($viaje->agregarPasajero($pasajero)) {
+        echo "Pasajero agregado correctamente.\n";
+        return true;
+    } else {
+        echo "No se pudo agregar al pasajero.\n";
+        return false;
+    }
+}
+
+function cargarResponsable($viaje) {
+    $numero_empleado = "";
+    $numero_licencia = "";
+    $nombre = "";
+    $apellido = "";
+
+    echo "Ingrese el nombre del Responsable: ";
+    $nombre = fgets(STDIN);
+    echo "Ingrese el apellido: ";
+    $apellido = fgets(STDIN);
+    echo "Ingrese el número de documento de licencia: ";
+    $numero_licencia = fgets(STDIN);
+    echo "Ingrese el teléfono del pasajero: ";
+    $numero_empleado = fgets(STDIN);
+
+    $responsable = new ResponsableV($numero_empleado, $numero_licencia, $nombre, $apellido);
+
+    $viaje->setResponbleV($responsable);
+}
+
+
 
 do {
     // Mostramos el menú
@@ -9,7 +59,8 @@ do {
     echo "1. Cargar información del viaje\n";
     echo "2. Modificar información del viaje\n";
     echo "3. Ver información del viaje\n";
-    echo "4. Salir\n";
+    echo "4. Cargar Pasajero\n";
+    echo "5. Salir\n";
     echo "Seleccione una opción: ";
 
     // Leemos la opción seleccionada por el usuario
@@ -27,6 +78,15 @@ do {
             $viaje->setCodigo($codigo);
             $viaje->setDestino($destino);
             $viaje->setMaxPasajeros($maxPasajeros);
+            cargarResponsable($viaje);
+            $cargaDePasajero = "Y";
+            while ($cargaDePasajero == "Y" || $cargaDePasajero == "y") {
+                echo "Deseada cargar Pasajeros? Y o N";
+                $cargaDePasajero = trim(fgets(STDIN));
+                if ($cargaDePasajero == "Y" || $cargaDePasajero == "y") {
+                    cargarPasajero($viaje);
+                }
+            }
             break;
         case 2:
             // Modificamos la información del viaje
@@ -34,6 +94,7 @@ do {
             echo "1. Código del viaje\n";
             echo "2. Destino del viaje\n";
             echo "3. Cantidad máxima de pasajeros\n";
+            echo "4. Cargar Pasajero\n";
             echo "Seleccione una opción: ";
             $opcionModificar = trim(fgets(STDIN));
             switch ($opcionModificar) {
@@ -52,6 +113,14 @@ do {
                     $maxPasajeros = trim(fgets(STDIN));
                     $viaje->setMaxPasajeros($maxPasajeros);
                     break;
+                case 4:
+                    if ($viaje->getCodigo() !== " ") {
+                        cargarPasajero($viaje);
+                    } else {
+                        echo "Cree un viaje";
+                    }
+
+                    break;
                 default:
                     echo "Opción inválida\n";
                     break;
@@ -59,13 +128,7 @@ do {
             break;
         case 3:
             // Mostramos la información del viaje
-            echo "Código del viaje: " . $viaje->getCodigo() . "\n";
-            echo "Destino del viaje: " . $viaje->getDestino() . "\n";
-            echo "Cantidad máxima de pasajeros: " . $viaje->getMaxPasajeros() . "\n";
-            echo "Pasajeros:\n";
-            foreach ($viaje->getPasajeros() as $pasajero) {
-                echo "- Nombre: " . $pasajero['nombre'] . ", Apellido: " . $pasajero['apellido'] . ", Número de documento: " . $pasajero['numero_documento'] . "\n";
-            }
+            echo $viaje->__toString();
             break;
         case 4:
             // Salimos del programa
@@ -75,4 +138,4 @@ do {
             echo "Opción inválida\n";
             break;
     }
-} while($opcion != 4);
+} while ($opcion != 4);
