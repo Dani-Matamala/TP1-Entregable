@@ -1,18 +1,21 @@
 <?php
-
 class Viaje {
-    private $responsable; //instacia de la clase ResponsableV
+    private $obj_responsable; // Instancia de la clase obj_ResponsableV
     private $codigo;
     private $destino;
     private $maxPasajeros;
-    private $pasajeros; //referencia a coleccion de pasajeros
+    private $col_pasajeros; // Referencia a colección de col_pasajeros
+    private $costoViaje;
+    private $costosAbonados;
 
-    public function __construct($codigo, $destino, $maxPasajeros, $responsable) {
-        $this->responsable = $responsable;
+    public function __construct($codigo, $destino, $maxPasajeros, $obj_responsable) {
+        $this->obj_responsable = $obj_responsable;
         $this->codigo = $codigo;
         $this->destino = $destino;
         $this->maxPasajeros = $maxPasajeros;
-        $this->pasajeros = array();
+        $this->col_pasajeros = array();
+        $this->costoViaje = 0;
+        $this->costosAbonados = 0;
     }
 
     public function getCodigo() {
@@ -40,19 +43,19 @@ class Viaje {
     }
 
     public function getPasajeros() {
-        return $this->pasajeros;
+        return $this->col_pasajeros;
     }
 
-    public function getResponsableV() {
-        return $this->responsable->__toString();
+    public function getobj_ResponsableV() {
+        return $this->obj_responsable->__toString();
     }
 
-    public function setResponbleV($responsableV) {
-        $this->responsable = $responsableV;
+    public function setResponbleV($obj_responsableV) {
+        $this->obj_responsable = $obj_responsableV;
     }
 
     private function existePasajero($pasajero) {
-        foreach ($this->pasajeros as $buscado) {
+        foreach ($this->col_pasajeros as $buscado) {
             if ($buscado->getNumero_documento() == $pasajero->getNumero_documento()) {
                 return true;
             }
@@ -61,32 +64,49 @@ class Viaje {
     }
 
     public function agregarPasajero($pasajero) {
-        if (count($this->pasajeros) < $this->maxPasajeros && !$this->existePasajero($pasajero)) {
-            array_push($this->pasajeros, $pasajero);
-            return true; //caso en que todo salio bien 
+        if (count($this->col_pasajeros) < $this->maxPasajeros && !$this->existePasajero($pasajero)) {
+            array_push($this->col_pasajeros, $pasajero);
+            return true; // Caso en que todo salió bien 
         } else {
-            return false; //caso en que fallo la insercion del objeto pasajero
+            return false; // Caso en que falló la inserción del objeto pasajero
         }
     }
 
-
     public function quitarPasajero($pasajero) {
-        foreach ($this->pasajeros as $key => $buscado) {
+        foreach ($this->col_pasajeros as $key => $buscado) {
             if ($buscado->getNumero_documento() == $pasajero->getNumero_documento()) {
-                unset($this->pasajeros[$key]);
+                unset($this->col_pasajeros[$key]);
                 return true;
             }
         }
         return false;
     }
 
-    public function __toString() {
-        $pasajeros = "";
-        foreach ($this->pasajeros as $pasajero) {
-            $pasajeros .= "#".$pasajero->__toString() . ", \n";
+    public function venderPasaje($objPasajero) {
+        if ($this->hayPasajesDisponible()) {
+            $this->agregarPasajero($objPasajero);
+            $this->costosAbonados += $this->calcularCostoFinal($objPasajero);
+            return $this->costosAbonados;
+        } else {
+            return null;// debe ser manejado en la clase principal 
         }
-        $pasajeros = rtrim($pasajeros, ', ');
-        return "Código: $this->codigo\nDestino: $this->destino\nMáximo de pasajeros: $this->maxPasajeros\nResponsable\n$this->responsable\nPasajeros\n$pasajeros";
     }
-    
+
+    public function hayPasajesDisponible() {
+        return count($this->col_pasajeros) < $this->maxPasajeros;
+    }
+    private function calcularCostoFinal($objPasajero) {
+        $porcentajeIncremento = $objPasajero->darPorcentajeIncremento();
+        $incremento = $this->costoViaje * $porcentajeIncremento / 100;
+        return $this->costoViaje + $incremento;
+    }
+
+    public function __toString() {
+        $col_pasajeros = "";
+        foreach ($this->col_pasajeros as $pasajero) {
+            $col_pasajeros .= "#" . $pasajero->__toString() . ", \n";
+        }
+        $col_pasajeros = rtrim($col_pasajeros, ', ');
+        return "Código: $this->codigo\nDestino: $this->destino\nMáximo de col_pasajeros: $this->maxPasajeros\nobj_Responsable\n$this->obj_responsable\nPasajeros\n$col_pasajeros";
+    }
 }

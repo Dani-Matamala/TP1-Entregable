@@ -1,15 +1,13 @@
 <?php
 class Pasajero {
-    private $nombre;
-    private $apellido;
-    private $numero_documento;
-    private $telefono;
+    protected $nombre;
+    protected $numeroAsiento;
+    protected $numeroTicket;
 
-    public function __construct($nombre, $apellido, $numero_documento, $telefono) {
+    public function __construct($nombre, $numeroAsiento, $numeroTicket) {
         $this->nombre = $nombre;
-        $this->apellido = $apellido;
-        $this->numero_documento = $numero_documento;
-        $this->telefono = $telefono;
+        $this->numeroAsiento = $numeroAsiento;
+        $this->numeroTicket = $numeroTicket;
     }
 
     public function getNombre() {
@@ -20,34 +18,107 @@ class Pasajero {
         $this->nombre = $nombre;
     }
 
-    public function getApellido() {
-        return $this->apellido;
+    public function getNumeroAsiento() {
+        return $this->numeroAsiento;
     }
 
-    public function setApellido($apellido) {
-        $this->apellido = $apellido;
+    public function setNumeroAsiento($numeroAsiento) {
+        $this->numeroAsiento = $numeroAsiento;
     }
 
-    public function getNumero_documento() {
-        return $this->numero_documento;
+    public function getNumeroTicket() {
+        return $this->numeroTicket;
     }
 
-    public function setNumero_documento($numero_documento) {
-        $this->numero_documento = $numero_documento;
+    public function setNumeroTicket($numeroTicket) {
+        $this->numeroTicket = $numeroTicket;
     }
 
-    public function getTelefono() {
-        return $this->telefono;
+    public function darPorcentajeIncremento() {
+        return 10;
+    }
+}
+
+class PasajeroVIP extends Pasajero {
+    protected $numeroViajeroFrecuente;
+    protected $millasPasajero;
+
+    public function __construct($nombre, $numeroAsiento, $numeroTicket, $numeroViajeroFrecuente, $millasPasajero) {
+        parent::__construct($nombre, $numeroAsiento, $numeroTicket);
+        $this->numeroViajeroFrecuente = $numeroViajeroFrecuente;
+        $this->millasPasajero = $millasPasajero;
     }
 
-    public function setTelefono($telefono) {
-        $this->telefono = $telefono;
+    public function getNumeroViajeroFrecuente() {
+        return $this->numeroViajeroFrecuente;
     }
 
-    public function __toString() {
-        return "Nombre: " . $this->nombre .
-            "\nApellido: " . $this->apellido .
-            "\nDocumento: " . $this->numero_documento .
-            "\nTelefono: " . $this->telefono;
+    public function setNumeroViajeroFrecuente($numeroViajeroFrecuente) {
+        $this->numeroViajeroFrecuente = $numeroViajeroFrecuente;
+    }
+
+    public function getMillasPasajero() {
+        return $this->millasPasajero;
+    }
+
+    public function setMillasPasajero($millasPasajero) {
+        $this->millasPasajero = $millasPasajero;
+    }
+
+    public function darPorcentajeIncremento() {
+        $porcentaje = 35;
+
+        if ($this->millasPasajero > 300) {
+            $porcentaje += 30;
+        }
+
+        return $porcentaje;
+    }
+}
+
+class PasajeroNecesidadesEspeciales extends Pasajero {
+    protected $requiereSillaRuedas;
+    protected $requiereAsistencia;
+    protected $requiereComidaEspecial;
+
+    public function __construct($nombre, $numeroAsiento, $numeroTicket, $requiereSillaRuedas, $requiereAsistencia, $requiereComidaEspecial) {
+        parent::__construct($nombre, $numeroAsiento, $numeroTicket);
+        $this->requiereSillaRuedas = $requiereSillaRuedas;
+        $this->requiereAsistencia = $requiereAsistencia;
+        $this->requiereComidaEspecial = $requiereComidaEspecial;
+    }
+
+    public function getRequiereSillaRuedas() {
+        return $this->requiereSillaRuedas;
+    }
+
+    public function setRequiereSillaRuedas($requiereSillaRuedas) {
+        $this->requiereSillaRuedas = $requiereSillaRuedas;
+    }
+
+    public function getRequiereAsistencia() {
+        return $this->requiereAsistencia;
+    }
+
+    public function setRequiereAsistencia($requiereAsistencia) {
+        $this->requiereAsistencia = $requiereAsistencia;
+    }
+
+    public function getRequiereComidaEspecial() {
+        return $this->requiereComidaEspecial;
+    }
+
+    public function setRequiereComidaEspecial($requiereComidaEspecial) {
+        $this->requiereComidaEspecial = $requiereComidaEspecial;
+    }
+
+    public function darPorcentajeIncremento() {
+        $porcentaje = 10;        
+        if ($this->requiereSillaRuedas && $this->requiereAsistencia && $this->requiereComidaEspecial) {
+            $porcentaje = 30;
+        } elseif ($this->requiereSillaRuedas || $this->requiereAsistencia || $this->requiereComidaEspecial) {
+            $porcentaje =  15;
+        }
+        return $porcentaje;
     }
 }
